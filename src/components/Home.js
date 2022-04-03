@@ -1,6 +1,7 @@
 import React from "react"
 import NewsCard from "./subComponents/NewsCard"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
+import Navbar from "./Navbar"
 
 const darkTheme = createTheme({
 	palette: {
@@ -10,9 +11,12 @@ const darkTheme = createTheme({
 
 function Home() {
 	return (
-		<ThemeProvider theme={darkTheme}>
-			<NewsCard />
-		</ThemeProvider>
+		<>
+			<Navbar />
+			<ThemeProvider theme={darkTheme}>
+				<NewsCard />
+			</ThemeProvider>
+		</>
 	)
 }
 

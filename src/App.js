@@ -1,5 +1,5 @@
 import "./App.css"
-import Navbar from "./components/Navbar"
+// import Navbar from "./components/Navbar"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Login from "./components/Login"
 import Landing from "./components/Landing"
@@ -17,7 +17,7 @@ function App() {
   const adminhome = <AdminHome/>  
 	return (
 		<>
-			<Navbar />
+			{/* <Navbar /> */}
 			<BrowserRouter>
 				<Routes>
 					<Route path="/" exact element={landing} />
