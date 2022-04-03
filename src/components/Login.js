@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography"
 import Container from "@mui/material/Container"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import Navbar from "./Navbar"
+import { useNavigate } from "react-router-dom"
 
 const darkTheme = createTheme({
 	palette: {
@@ -16,13 +17,34 @@ const darkTheme = createTheme({
 // const theme = createTheme()
 
 function Login() {
-	const handleSubmit = (event) => {
+	const navigate = useNavigate()
+	const handleSubmit = async (event) => {
 		event.preventDefault()
-		const data = new FormData(event.currentTarget)
-		console.log({
-			email: data.get("email"),
-			password: data.get("password"),
-		})
+		const formData = new FormData(event.currentTarget)
+		const dataObj = {
+			email: formData.get("email"),
+			password: formData.get("password"),
+		}
+		console.log(dataObj)
+		try{
+			const respose = await fetch("http://localhost:8000/api/login", {
+				method: "POST",
+				headers: {
+					"content-Type": "application/json",
+				},
+				body: JSON.stringify(dataObj),
+			})
+			const data = await respose.json()
+
+			if (data.user) {
+				localStorage.setItem('token',data.user)
+				navigate('/home')
+			} else {
+				alert("Please check your username or password")
+			}
+		}catch(err){
+			alert(err.message)
+		}
 	}
 
 	return (
