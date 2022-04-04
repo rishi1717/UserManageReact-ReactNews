@@ -14,6 +14,7 @@ function Navbar(props) {
 	}
 
 	const navigate = useNavigate()
+
 	if (props.adminNav) {
 		if (admin) {
 			navbarRight = (
@@ -23,6 +24,7 @@ function Navbar(props) {
 					color="inherit"
 					size="small"
 					onClick={() => {
+						localStorage.removeItem("adminToken")
 						navigate("/adminlogin")
 					}}
 				>
@@ -67,6 +69,10 @@ function Navbar(props) {
 					variant="outlined"
 					color="inherit"
 					size="small"
+					onClick={() => {
+						localStorage.removeItem('token')
+						navigate("/adminlogin")
+					}}
 				>
 					Logout
 				</Button>
