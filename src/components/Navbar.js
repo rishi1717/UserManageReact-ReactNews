@@ -4,7 +4,7 @@ import NewspaperIcon from "@mui/icons-material/Newspaper"
 import { useNavigate } from "react-router-dom"
 
 function Navbar(props) {
-	let admin = "rishi"
+	let admin = props.admin || ""
 	let user = props.user || ""
 	let navbarRight
 

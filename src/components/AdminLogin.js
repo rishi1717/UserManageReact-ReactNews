@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import Button from "@mui/material/Button"
 import CssBaseline from "@mui/material/CssBaseline"
 import TextField from "@mui/material/TextField"
@@ -7,6 +7,8 @@ import Typography from "@mui/material/Typography"
 import Container from "@mui/material/Container"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import Navbar from "./Navbar"
+import axios from 'axios'
+import { useNavigate } from "react-router-dom"
 
 const darkTheme = createTheme({
 	palette: {
@@ -16,18 +18,35 @@ const darkTheme = createTheme({
 // const theme = createTheme()
 
 function Login() {
-	const handleSubmit = (event) => {
+	const navigate = useNavigate()
+	const [data, setData] = useState({ adminid: "", password: "" })
+	const [error, setError] = useState("")
+
+	const handleChange = ({ currentTarget: input }) => {
+		setData({ ...data, [input.name]: input.value })
+	}
+	const handleSubmit = async (event) => {
 		event.preventDefault()
-		const data = new FormData(event.currentTarget)
-		console.log({
-			adminid: data.get("adminid"),
-			password: data.get("password"),
-		})
+		try {
+			const url = "http://localhost:8000/api/admin"
+			const { data: res } = await axios.post(url, data)
+			console.log(res)
+			localStorage.setItem("adminToken", res.admin)
+			navigate("/adminhome")
+		} catch (error) {
+			if (
+				error.response &&
+				error.response.status >= 400 &&
+				error.response.status <= 500
+			) {
+				setError(error.response.data.message)
+			}
+		}
 	}
 
 	return (
 		<>
-			<Navbar adminNav={true}/>
+			<Navbar adminNav={true} />
 			<ThemeProvider theme={darkTheme}>
 				<Container component="main" maxWidth="md">
 					<CssBaseline />
@@ -57,6 +76,8 @@ function Login() {
 								name="adminid"
 								autoFocus
 								variant="standard"
+								onChange={handleChange}
+								value={data.adminid}
 							/>
 							<TextField
 								margin="normal"
@@ -67,7 +88,14 @@ function Login() {
 								type="password"
 								id="password"
 								variant="standard"
+								onChange={handleChange}
+								value={data.password}
 							/>
+							{error && (
+								<Typography component="h1" variant="h5">
+									{error}
+								</Typography>
+							)}
 							<Button
 								type="submit"
 								fullWidth
