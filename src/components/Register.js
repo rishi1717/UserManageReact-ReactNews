@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import Button from "@mui/material/Button"
 import CssBaseline from "@mui/material/CssBaseline"
 import TextField from "@mui/material/TextField"
@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography"
 import Container from "@mui/material/Container"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import Navbar from "./Navbar"
+import axios from "axios"
 import { useNavigate } from "react-router-dom"
 
 const darkTheme = createTheme({
@@ -16,30 +17,29 @@ const darkTheme = createTheme({
 })
 
 function Register() {
+	const [error, setError] = useState("")
+	const [data, setData] = useState({
+		name: "",
+		email: "",
+		phone: "",
+		password: "",
+	})
 	const navigate = useNavigate()
+
+	const handleChange = ({ currentTarget: input }) => {
+		setData({ ...data, [input.name]: input.value })
+	}
 
 	const handleSubmit = async (event) => {
 		event.preventDefault()
-		const formData = new FormData(event.currentTarget)
-		const dataObj = {
-			name: formData.get("name"),
-			email: formData.get("email"),
-			password: formData.get("password"),
-			phone: formData.get("phone"),
-		}
-		console.log(dataObj)
-
 		try {
-			await fetch("http://localhost:8000/api/register/", {
-				method: "POST",
-				headers: {
-					"content-Type": "application/json",
-				},
-				body: JSON.stringify(dataObj),
-			})
+			const url = "http://localhost:8000/api/register"
+			const { data: res } = await axios.post(url, data)
 			navigate("/login")
-		} catch (e) {
-			alert(e.message)
+		} catch (error) {
+			if (error.response) {
+				setError(error.response.data.message)
+			}
 		}
 	}
 
@@ -73,6 +73,8 @@ function Register() {
 								id="name"
 								label="Name"
 								name="name"
+								onChange={handleChange}
+								value={data.name}
 								autoFocus
 								variant="standard"
 							/>
@@ -84,6 +86,8 @@ function Register() {
 								label="Email Address"
 								name="email"
 								variant="standard"
+								onChange={handleChange}
+								value={data.email}
 							/>
 							<TextField
 								margin="normal"
@@ -92,6 +96,8 @@ function Register() {
 								label="Phone"
 								name="phone"
 								variant="standard"
+								onChange={handleChange}
+								value={data.phone}
 							/>
 							<TextField
 								margin="normal"
@@ -102,7 +108,14 @@ function Register() {
 								type="password"
 								id="password"
 								variant="standard"
+								onChange={handleChange}
+								value={data.password}
 							/>
+							{error && (
+								<Typography component="h1" variant="h5">
+									{error}
+								</Typography>
+							)}
 							<Button
 								type="submit"
 								fullWidth
