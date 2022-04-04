@@ -35,7 +35,8 @@ function Register() {
 		try {
 			const url = "http://localhost:8000/api/register"
 			const { data: res } = await axios.post(url, data)
-			navigate("/login")
+			console.log(res.message)
+			navigate("/login")	
 		} catch (error) {
 			if (error.response) {
 				setError(error.response.data.message)

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import Button from "@mui/material/Button"
 import CssBaseline from "@mui/material/CssBaseline"
 import TextField from "@mui/material/TextField"
@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography"
 import Container from "@mui/material/Container"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import Navbar from "./Navbar"
+import axios from 'axios'
 import { useNavigate } from "react-router-dom"
 
 const darkTheme = createTheme({
@@ -17,33 +18,29 @@ const darkTheme = createTheme({
 // const theme = createTheme()
 
 function Login() {
+	const [data, setData] = useState({ email: "", password: "" })
+	const [error, setError] = useState("")
+
+	const handleChange = ({ currentTarget: input }) => {
+		setData({ ...data, [input.name]: input.value })
+	}
 	const navigate = useNavigate()
 	const handleSubmit = async (event) => {
 		event.preventDefault()
-		const formData = new FormData(event.currentTarget)
-		const dataObj = {
-			email: formData.get("email"),
-			password: formData.get("password"),
-		}
-		console.log(dataObj)
-		try{
-			const respose = await fetch("http://localhost:8000/api/login", {
-				method: "POST",
-				headers: {
-					"content-Type": "application/json",
-				},
-				body: JSON.stringify(dataObj),
-			})
-			
-			const data = await respose.json()
-			if (data.user) {
-				localStorage.setItem('token',data.user)
-				navigate('/home')
-			} else {
-				alert("Please check your username or password")
+		try {
+			const url = "http://localhost:8000/api/login"
+			const { data: res } = await axios.post(url, data)
+			console.log(res.user)
+			localStorage.setItem("token", res.user)
+			navigate('/home')
+		} catch (error) {
+			if (
+				error.response &&
+				error.response.status >= 400 &&
+				error.response.status <= 500
+			) {
+				setError(error.response.data.message)
 			}
-		}catch(err){
-			alert(err.message)
 		}
 	}
 
@@ -79,6 +76,8 @@ function Login() {
 								name="email"
 								autoFocus
 								variant="standard"
+								onChange={handleChange}
+								value={data.email}
 							/>
 							<TextField
 								margin="normal"
@@ -89,7 +88,14 @@ function Login() {
 								type="password"
 								id="password"
 								variant="standard"
+								onChange={handleChange}
+								value={data.password}
 							/>
+							{error && (
+								<Typography component="h1" variant="h5">
+									{error}
+								</Typography>
+							)}
 							<Button
 								type="submit"
 								fullWidth
