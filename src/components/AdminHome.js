@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react"
 import UserData from "./subComponents/UserData"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
-import { Box, Button, Container, Modal, TextField } from "@mui/material"
+import { Box, Button, Container, Modal, TextField, Typography } from "@mui/material"
 import Navbar from "./Navbar"
 import UnauthorizedAdmin from "../components/subComponents/UnauthorizedAdmin"
 import axios from "axios"
+import { useNavigate } from "react-router-dom"
 
 const style = {
 	position: "absolute",
@@ -33,6 +34,14 @@ const handleSearch = (event) => {
 }
 
 function AdminHome() {
+	const navigate = useNavigate()
+	const [error, setError] = useState("")
+	const [data, setData] = useState({
+		name: "",
+		email: "",
+		phone: "",
+		password: "",
+	})
 	const [users, setUsers] = useState([
 		{
 			email: "no emails found",
@@ -46,6 +55,24 @@ function AdminHome() {
 			setUsers(data.data.users)
 		})
 	}, [])
+
+	const handleSubmit = async (event) => {
+		event.preventDefault()
+		try {
+			const url = "http://localhost:8000/api/register"
+			const { data: res } = await axios.post(url, data)
+			console.log(res.message)
+			navigate("/adminhome")
+		} catch (error) {
+			if (error.response) {
+				setError(error.response.data.message)
+			}
+		}
+	}
+
+	const handleChange = ({ currentTarget: input }) => {
+		setData({ ...data, [input.name]: input.value })
+	}
 
 	const [open, setOpen] = React.useState(false)
 	const handleOpen = () => setOpen(true)
@@ -99,7 +126,12 @@ function AdminHome() {
 								aria-labelledby="keep-mounted-modal-title"
 								aria-describedby="keep-mounted-modal-description"
 							>
-								<Box component="form" noValidate sx={style}>
+								<Box
+									component="form"
+									onSubmit={handleSubmit}
+									noValidate
+									sx={style}
+								>
 									<TextField
 										margin="normal"
 										required
@@ -109,6 +141,8 @@ function AdminHome() {
 										name="name"
 										autoFocus
 										variant="standard"
+										onChange={handleChange}
+										value={data.name}
 									/>
 									<TextField
 										margin="normal"
@@ -118,14 +152,18 @@ function AdminHome() {
 										label="Email Address"
 										name="email"
 										variant="standard"
+										onChange={handleChange}
+										value={data.email}
 									/>
 									<TextField
 										margin="normal"
 										fullWidth
-										id="Phone"
+										id="phone"
 										label="Phone"
-										name="Phone"
+										name="phone"
 										variant="standard"
+										onChange={handleChange}
+										value={data.phone}
 									/>
 									<TextField
 										margin="normal"
@@ -136,7 +174,14 @@ function AdminHome() {
 										type="password"
 										id="password"
 										variant="standard"
+										onChange={handleChange}
+										value={data.password}
 									/>
+									{error && (
+										<Typography component="h1" variant="h5">
+											{error}
+										</Typography>
+									)}
 									<Button
 										type="submit"
 										fullWidth

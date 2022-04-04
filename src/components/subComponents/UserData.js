@@ -7,6 +7,8 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import { Button, Container, TextField } from "@mui/material"
 import Box from "@mui/material/Box"
 import Modal from "@mui/material/Modal"
+import { useNavigate } from "react-router-dom"
+import axios from "axios"
 
 const style = {
 	position: "absolute",
@@ -23,7 +25,7 @@ const style = {
 }
 
 export default function UserData(props) {
-	// console.log(props.users)
+	const navigate = useNavigate()
 	const [users, setUsers] = useState([
 		{
 			email: "no emails found",
@@ -32,17 +34,49 @@ export default function UserData(props) {
 			id: "no id found",
 		},
 	])
+	const [open, setOpen] = React.useState(false)
+	const [error, setError] = useState("")
+	const [data, setData] = useState({
+		name: "",
+		email: "",
+		phone: "",
+	})
 	useEffect(() => {
 		setUsers(props.users)
 	}, [props.users])
-	const [open, setOpen] = React.useState(false)
-	const handleOpen = () => setOpen(true)
+
+	const handleOpen = (userId) => {
+		setOpen(true)
+		let obj = users.find((o) => o._id === userId)
+		setData(obj)
+	}
 	const handleClose = () => setOpen(false)
+
+	const handleChange = ({ currentTarget: input }) => {
+		setData({ ...data, [input.name]: input.value })
+	}
+
+	const handleUpdate = async (event) => {
+		event.preventDefault()
+		try {
+			const url = "http://localhost:8000/api/register"
+			const { data: res } = await axios.put(url, data)
+			console.log(res.message)
+			navigate("/adminhome")
+			setOpen(false)
+			setUsers(res.users)
+		} catch (error) {
+			if (error.response) {
+				setError(error.response.data.message)
+			}
+		}
+	}
+
 	return (
 		<Container>
 			{users.map((elem) => {
 				return (
-					<Accordion key={elem.name}>
+					<Accordion key={elem.email}>
 						<AccordionSummary
 							expandIcon={<ExpandMoreIcon />}
 							aria-controls="panel1a-content"
@@ -51,10 +85,10 @@ export default function UserData(props) {
 							<Typography>{elem.name}</Typography>
 						</AccordionSummary>
 						<AccordionDetails>
-							<Typography>id :  {elem._id}</Typography>
-							<Typography>name :  {elem.name}</Typography>
-							<Typography>mobile :  {elem.phone}</Typography>
-							<Typography>email :  {elem.email}</Typography>
+							<Typography>id : {elem._id}</Typography>
+							<Typography>name : {elem.name}</Typography>
+							<Typography>mobile : {elem.phone}</Typography>
+							<Typography>email : {elem.email}</Typography>
 							<Container>
 								<Button
 									sx={{
@@ -64,7 +98,7 @@ export default function UserData(props) {
 									}}
 									size="small"
 									variant="outlined"
-									onClick={handleOpen}
+									onClick={() => handleOpen(elem._id)}
 								>
 									Update
 								</Button>
@@ -77,7 +111,7 @@ export default function UserData(props) {
 								>
 									<Box
 										component="form"
-										onSubmit={""}
+										onSubmit={handleUpdate}
 										noValidate
 										sx={style}
 									>
@@ -90,6 +124,8 @@ export default function UserData(props) {
 											name="name"
 											autoFocus
 											variant="standard"
+											onChange={handleChange}
+											value={data.name}
 										/>
 										<TextField
 											margin="normal"
@@ -99,15 +135,24 @@ export default function UserData(props) {
 											label="Email Address"
 											name="email"
 											variant="standard"
+											onChange={handleChange}
+											value={data.email}
 										/>
 										<TextField
 											margin="normal"
 											fullWidth
-											id="Phone"
+											id="phone"
 											label="Phone"
-											name="Phone"
+											name="phone"
 											variant="standard"
+											onChange={handleChange}
+											value={data.phone}
 										/>
+										{error && (
+											<Typography component="h1" variant="h5">
+												{error}
+											</Typography>
+										)}
 										<Button
 											type="submit"
 											fullWidth
