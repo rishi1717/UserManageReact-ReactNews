@@ -71,7 +71,7 @@ function Navbar(props) {
 					size="small"
 					onClick={() => {
 						localStorage.removeItem('token')
-						navigate("/adminlogin")
+						navigate("/login")
 					}}
 				>
 					Logout

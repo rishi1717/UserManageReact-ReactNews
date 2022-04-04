@@ -1,9 +1,8 @@
-import React, { useEffect } from "react"
+import React from "react"
 import NewsCard from "./subComponents/NewsCard"
+import Unauthorized from './subComponents/Unauthorized'
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import Navbar from "./Navbar"
-import jwtDecode from "jwt-decode"
-import { useNavigate } from "react-router-dom"
 
 const darkTheme = createTheme({
 	palette: {
@@ -12,27 +11,25 @@ const darkTheme = createTheme({
 })
 
 function Home() {
-	const navigate = useNavigate()
-	useEffect(() => {
-		const token = localStorage.getItem("token")
-		if (token) {
-			const user = jwtDecode(token)
-			if (!user) {
-				localStorage.removeItem("token")
-				navigate("/login")
-			} else {
-				console.log('used effect');
-			}
-		}
-	}, [navigate])
-	return (
-		<>
-			<Navbar user="rishi"/>
-			<ThemeProvider theme={darkTheme}>
-				<NewsCard />
-			</ThemeProvider>
-		</>
-	)
+	if (localStorage.getItem("token")) {
+		return (
+			<>
+				<Navbar user="rishi" />
+				<ThemeProvider theme={darkTheme}>
+					<NewsCard />
+				</ThemeProvider>
+			</>
+		)
+	}else{
+		return (
+			<>
+				<Navbar/>
+				<ThemeProvider theme={darkTheme}>
+					<Unauthorized />
+				</ThemeProvider>
+			</>
+		)
+	}
 }
 
 export default Home
