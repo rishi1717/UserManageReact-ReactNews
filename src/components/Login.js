@@ -34,8 +34,8 @@ function Login() {
 				},
 				body: JSON.stringify(dataObj),
 			})
+			
 			const data = await respose.json()
-
 			if (data.user) {
 				localStorage.setItem('token',data.user)
 				navigate('/home')
