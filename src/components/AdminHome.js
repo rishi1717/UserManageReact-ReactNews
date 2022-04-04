@@ -1,9 +1,10 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import UserData from "./subComponents/UserData"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import { Box, Button, Container, Modal, TextField } from "@mui/material"
 import Navbar from "./Navbar"
 import UnauthorizedAdmin from "../components/subComponents/UnauthorizedAdmin"
+import axios from "axios"
 
 const style = {
 	position: "absolute",
@@ -32,6 +33,20 @@ const handleSearch = (event) => {
 }
 
 function AdminHome() {
+	const [users, setUsers] = useState([
+		{
+			email: "no emails found",
+			name: "no users found",
+			mobile: "no mobile found",
+			id: "no id found",
+		},
+	])
+	useEffect(() => {
+		axios.get("http://localhost:8000/api/admin").then((data) => {
+			setUsers(data.data.users)
+		})
+	}, [])
+
 	const [open, setOpen] = React.useState(false)
 	const handleOpen = () => setOpen(true)
 	const handleClose = () => setOpen(false)
@@ -61,7 +76,7 @@ function AdminHome() {
 								sx={{ width: "90%" }}
 							/>
 						</Box>
-						<UserData />
+						<UserData users={users} />
 						<Box
 							display="flex"
 							justifyContent="center"

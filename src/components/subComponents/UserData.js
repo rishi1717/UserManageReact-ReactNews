@@ -1,4 +1,4 @@
-import * as React from "react"
+import React, { useEffect, useState } from "react"
 import Accordion from "@mui/material/Accordion"
 import AccordionSummary from "@mui/material/AccordionSummary"
 import AccordionDetails from "@mui/material/AccordionDetails"
@@ -22,27 +22,39 @@ const style = {
 	p: 4,
 }
 
-export default function UserData() {
+export default function UserData(props) {
+	// console.log(props.users)
+	const [users, setUsers] = useState([
+		{
+			email: "no emails found",
+			name: "no users found",
+			mobile: "no mobile found",
+			id: "no id found",
+		},
+	])
+	useEffect(() => {
+		setUsers(props.users)
+	}, [props.users])
 	const [open, setOpen] = React.useState(false)
 	const handleOpen = () => setOpen(true)
 	const handleClose = () => setOpen(false)
-	let arr = [1, 2, 3, 4, 5]
 	return (
 		<Container>
-			{arr.map((elem) => {
+			{users.map((elem) => {
 				return (
-					<Accordion key={elem}>
+					<Accordion key={elem.name}>
 						<AccordionSummary
 							expandIcon={<ExpandMoreIcon />}
 							aria-controls="panel1a-content"
 							id="panel1a-header"
 						>
-							<Typography>User</Typography>
+							<Typography>{elem.name}</Typography>
 						</AccordionSummary>
 						<AccordionDetails>
-							<Typography>name: {elem}</Typography>
-							<Typography>mobile: {elem}</Typography>
-							<Typography>email: {elem}</Typography>
+							<Typography>id :  {elem._id}</Typography>
+							<Typography>name :  {elem.name}</Typography>
+							<Typography>mobile :  {elem.phone}</Typography>
+							<Typography>email :  {elem.email}</Typography>
 							<Container>
 								<Button
 									sx={{
