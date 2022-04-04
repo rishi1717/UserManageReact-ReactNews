@@ -72,6 +72,21 @@ export default function UserData(props) {
 		}
 	}
 
+	const handleDelete = async (userId) => {
+		let obj = users.find((o) => o._id === userId)
+		console.log(obj);
+		try {
+			const url = "http://localhost:8000/api/register"
+			const { data: res } = await axios.delete(url, {data:obj})
+			console.log(res.message)
+			setUsers(res.users)
+		} catch (error) {
+			if (error.response) {
+				setError(error.response.data.message)
+			}
+		}
+	}
+
 	return (
 		<Container>
 			{users.map((elem) => {
@@ -172,6 +187,7 @@ export default function UserData(props) {
 									size="small"
 									variant="outlined"
 									color="error"
+									onClick={() => handleDelete(elem._id)}
 								>
 									Delete
 								</Button>
