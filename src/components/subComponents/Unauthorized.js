@@ -37,10 +37,10 @@ export default function Unauthorized() {
 					size="small"
 					variant="contained"
 					onClick={() => {
-						navigate("/register")
+						navigate("/login")
 					}}
 				>
-					Be a member to access our website
+					Login to access our website
 				</Button>
 			</Container>
 		</Box>

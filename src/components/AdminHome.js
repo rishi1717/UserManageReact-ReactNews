@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react"
 import UserData from "./subComponents/UserData"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
-import { Box, Button, Container, Modal, TextField, Typography } from "@mui/material"
+import {
+	Box,
+	Button,
+	Container,
+	Modal,
+	TextField,
+	Typography,
+} from "@mui/material"
 import Navbar from "./Navbar"
 import UnauthorizedAdmin from "../components/subComponents/UnauthorizedAdmin"
 import axios from "axios"
@@ -12,7 +19,7 @@ const style = {
 	top: "50%",
 	left: "50%",
 	transform: "translate(-50%, -50%)",
-	maxWidth: 500,
+	maxWidth: 600,
 	minWidth: 250,
 	bgcolor: "background.paper",
 	color: "white",
@@ -26,12 +33,6 @@ const darkTheme = createTheme({
 		mode: "dark",
 	},
 })
-
-const handleSearch = (event) => {
-	event.preventDefault()
-	const data = new FormData(event.currentTarget)
-	console.log(data.get("search"))
-}
 
 function AdminHome() {
 	const navigate = useNavigate()
@@ -55,6 +56,16 @@ function AdminHome() {
 			setUsers(data.data.users)
 		})
 	}, [])
+
+	const handleSearch = (event) => {
+		event.preventDefault()
+		const data = new FormData(event.currentTarget)
+		axios
+			.get(`http://localhost:8000/api/register?search=${data.get("search")}`)
+			.then((data) => {
+				setUsers(data.data.users)
+			})
+	}
 
 	const handleSubmit = async (event) => {
 		event.preventDefault()
@@ -88,6 +99,7 @@ function AdminHome() {
 							display="flex"
 							justifyContent="center"
 							component="form"
+							autoComplete="off"
 							onChange={handleSearch}
 							noValidate
 							sx={{ mt: 1, mb: 2 }}
@@ -104,14 +116,7 @@ function AdminHome() {
 							/>
 						</Box>
 						<UserData users={users} />
-						<Box
-							display="flex"
-							justifyContent="center"
-							component="form"
-							onSubmit={handleSearch}
-							noValidate
-							sx={{ mt: 1, mb: 2 }}
-						>
+						<Box display="flex" justifyContent="center">
 							<Button
 								variant="outlined"
 								sx={{ mt: 5 }}
