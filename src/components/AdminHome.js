@@ -37,6 +37,9 @@ function AdminHome() {
 	const handleOpen = () => setOpen(true)
 	const handleClose = useCallback(() => {
 		setOpen(false)
+		axios.get("http://localhost:8000/api/admin").then((data) => {
+			setUsers(data.data.users)
+		})
 	}, [])
 
 	useEffect(() => {

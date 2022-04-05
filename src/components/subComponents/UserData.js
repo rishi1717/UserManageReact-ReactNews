@@ -27,7 +27,7 @@ const style = {
 	transform: "translate(-50%, -50%)",
 	minWidth: 250,
 	maxWidth: 500,
-	bgcolor: "background.paper",
+	bgcolor: "black",
 	color: "white",
 	border: "2px solid #000",
 	boxShadow: 24,
@@ -97,8 +97,8 @@ export default function UserData(props) {
 			background: "#1E1E1E",
 			color: "white",
 			showCancelButton: true,
-			confirmButtonColor: "#072e00",
-			cancelButtonColor: "#380300",
+			confirmButtonColor: "#380300",
+			cancelButtonColor: "#072e00",
 			confirmButtonText: "Delete!",
 		}).then(async (result) => {
 			if (result.isConfirmed) {
@@ -109,7 +109,13 @@ export default function UserData(props) {
 					const { data: res } = await axios.delete(url, { data: obj })
 					console.log(res.message)
 					setUsers(res.users)
-					Toast.fire("Deleted!", "User Deleted.", "success")
+					Toast.fire({
+						position: "bottom-end",
+						icon: "success",
+						title: "User Deleted",
+						showConfirmButton: false,
+						timer: 3000,
+					})
 				} catch (error) {
 					if (error.response) {
 						setError(error.response.data.message)
@@ -132,11 +138,35 @@ export default function UserData(props) {
 							<Typography>{elem.name}</Typography>
 						</AccordionSummary>
 						<AccordionDetails>
-							<Typography>id : {elem._id}</Typography>
-							<Typography>name : {elem.name}</Typography>
-							<Typography>mobile : {elem.phone}</Typography>
-							<Typography>email : {elem.email}</Typography>
-							<Container>
+							<Typography component={'div'} >
+								<Typography
+									display="inline"
+									sx={{ color: "#757272" }}
+									fontWeight="fontWeightBold"
+								>
+									id :{" "}
+								</Typography>
+								{elem._id}
+							</Typography>
+							<Typography component={'div'} >
+								<Typography display="inline" sx={{ color: "#757272" }} fontWeight="fontWeightBold">
+									name :{" "}
+								</Typography>
+								{elem.name}
+							</Typography>
+							<Typography component={'div'} >
+								<Typography display="inline" sx={{ color: "#757272" }} fontWeight="fontWeightBold">
+									mobile :{" "}
+								</Typography>
+								{elem.phone}
+							</Typography>
+							<Typography component={'div'} >
+								<Typography display="inline" sx={{ color: "#757272" }} fontWeight="fontWeightBold">
+									email :{" "}
+								</Typography>
+								{elem.email}
+							</Typography>
+							<Container sx={{m:'1rem'}}>
 								<Button
 									sx={{
 										float: "right",
@@ -149,67 +179,7 @@ export default function UserData(props) {
 								>
 									Update
 								</Button>
-								<Modal
-									// keepMounted
-									open={open}
-									onClose={handleClose}
-									aria-labelledby="keep-mounted-modal-title"
-									aria-describedby="keep-mounted-modal-description"
-								>
-									<Box
-										component="form"
-										onSubmit={handleUpdate}
-										noValidate
-										sx={style}
-									>
-										<TextField
-											margin="normal"
-											required
-											fullWidth
-											id="name"
-											label="Name"
-											name="name"
-											autoFocus
-											variant="standard"
-											onChange={handleChange}
-											value={data.name}
-										/>
-										<TextField
-											margin="normal"
-											required
-											fullWidth
-											id="email"
-											label="Email Address"
-											name="email"
-											variant="standard"
-											onChange={handleChange}
-											value={data.email}
-										/>
-										<TextField
-											margin="normal"
-											fullWidth
-											id="phone"
-											label="Phone"
-											name="phone"
-											variant="standard"
-											onChange={handleChange}
-											value={data.phone}
-										/>
-										{error && (
-											<Typography component="h1" variant="h5">
-												{error}
-											</Typography>
-										)}
-										<Button
-											type="submit"
-											fullWidth
-											variant="outlined"
-											sx={{ mt: 3, mb: 2 }}
-										>
-											Update
-										</Button>
-									</Box>
-								</Modal>
+
 								<Button
 									sx={{
 										float: "right",
@@ -225,6 +195,67 @@ export default function UserData(props) {
 								</Button>
 							</Container>
 						</AccordionDetails>
+						<Modal
+							// keepMounted
+							open={open}
+							onClose={handleClose}
+							aria-labelledby="keep-mounted-modal-title"
+							aria-describedby="keep-mounted-modal-description"
+						>
+							<Box
+								component="form"
+								onSubmit={handleUpdate}
+								noValidate
+								sx={style}
+							>
+								<TextField
+									margin="normal"
+									required
+									fullWidth
+									id="name"
+									label="Name"
+									name="name"
+									autoFocus
+									variant="standard"
+									onChange={handleChange}
+									value={data.name}
+								/>
+								<TextField
+									margin="normal"
+									required
+									fullWidth
+									id="email"
+									label="Email Address"
+									name="email"
+									variant="standard"
+									onChange={handleChange}
+									value={data.email}
+								/>
+								<TextField
+									margin="normal"
+									fullWidth
+									id="phone"
+									label="Phone"
+									name="phone"
+									variant="standard"
+									onChange={handleChange}
+									value={data.phone}
+								/>
+								{error && (
+									<Typography sx={{ color: "red" }}>
+										{error}
+									</Typography>
+								)}
+								<Button
+									type="submit"
+									fullWidth
+									variant="outlined"
+									sx={{ mt: 3, mb: 2 }}
+								>
+									Update
+								</Button>
+							</Box>
+						</Modal>
 					</Accordion>
 				)
 			})}

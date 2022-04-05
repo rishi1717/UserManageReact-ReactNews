@@ -6,6 +6,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
 import Swal from "sweetalert2"
+import { useForm } from "react-hook-form"
 
 const Toast = Swal.mixin({
 	background: "#1E1E1E",
@@ -17,6 +18,11 @@ const Toast = Swal.mixin({
 })
 
 export default function RegisterForm(props) {
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm()
 	const [error, setError] = useState("")
 	const [data, setData] = useState({
 		name: "",
@@ -30,14 +36,13 @@ export default function RegisterForm(props) {
 		setData({ ...data, [input.name]: input.value })
 	}
 
-	const handleSubmit = async (event) => {
-		event.preventDefault()
+	const onSubmit = async (event) => {
 		try {
 			const url = "http://localhost:8000/api/register"
 			const { data: res } = await axios.post(url, data)
 			console.log(res.message)
-			if (props.admin) navigate("/login")
-			else navigate("/adminhome")
+			if (props.admin) navigate("/adminhome")
+			else navigate("/login")
 			Toast.fire({
 				position: "bottom-right",
 				icon: "success",
@@ -53,8 +58,15 @@ export default function RegisterForm(props) {
 	}
 
 	return (
-		<Box component="form" onSubmit={handleSubmit} noValidate>
+		<Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
 			<TextField
+				{...register("name", {
+					required: "Provide your name!",
+					minLength: {
+						value: 2,
+						message: "Atleast 2 characters required",
+					},
+				})}
 				margin="normal"
 				required
 				fullWidth
@@ -65,8 +77,18 @@ export default function RegisterForm(props) {
 				value={data.name}
 				autoFocus
 				variant="standard"
+				error={!!errors?.name}
+				helperText={errors?.name ? errors.name.message : null}
 			/>
 			<TextField
+				{...register("email", {
+					required: "Provide your Email!",
+					minLength: { value: 8, message: "Not a valid Email" },
+					pattern: {
+						value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
+						message: "Not a valid Email",
+					},
+				})}
 				margin="normal"
 				required
 				fullWidth
@@ -76,18 +98,32 @@ export default function RegisterForm(props) {
 				variant="standard"
 				onChange={handleChange}
 				value={data.email}
+				error={!!errors?.email}
+				helperText={errors?.email ? errors.email.message : null}
 			/>
 			<TextField
+				{...register("phone", {
+					required: "Provide your phone no!",
+					minLength: { value: 9, message: "Not a valid phone number" },
+					maxLength: { value: 12, message: "Not a valid phone number" },
+				})}
 				margin="normal"
 				fullWidth
+				required
 				id="phone"
 				label="Phone"
 				name="phone"
 				variant="standard"
 				onChange={handleChange}
 				value={data.phone}
+				error={!!errors?.phone}
+				helperText={errors?.phone ? errors.phone.message : null}
 			/>
 			<TextField
+				{...register("password", {
+					required: "Provide a password!",
+					minLength: { value: 8, message: "Atleast 8 charecters" },
+				})}
 				margin="normal"
 				required
 				fullWidth
@@ -98,9 +134,11 @@ export default function RegisterForm(props) {
 				variant="standard"
 				onChange={handleChange}
 				value={data.password}
+				error={!!errors?.password}
+				helperText={errors?.password ? errors.password.message : null}
 			/>
 			{error && (
-				<Typography component="h1" variant="h5">
+				<Typography sx={{color:'red'}}>
 					{error}
 				</Typography>
 			)}
