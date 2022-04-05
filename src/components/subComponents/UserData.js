@@ -9,6 +9,16 @@ import Box from "@mui/material/Box"
 import Modal from "@mui/material/Modal"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
+import Swal from "sweetalert2"
+
+const Toast = Swal.mixin({
+	background: "#1E1E1E",
+	color: "white",
+	toast: true,
+	position: "bottom-end",
+	showConfirmButton: false,
+	timerProgressBar: true,
+})
 
 const style = {
 	position: "absolute",
@@ -64,6 +74,13 @@ export default function UserData(props) {
 			console.log(res.message)
 			navigate("/adminhome")
 			setOpen(false)
+			Toast.fire({
+				position: "bottom-end",
+				icon: "success",
+				title: "User Updated",
+				showConfirmButton: false,
+				timer: 3000,
+			})
 			setUsers(res.users)
 		} catch (error) {
 			if (error.response) {
@@ -72,19 +89,34 @@ export default function UserData(props) {
 		}
 	}
 
-	const handleDelete = async (userId) => {
-		let obj = users.find((o) => o._id === userId)
-		console.log(obj);
-		try {
-			const url = "http://localhost:8000/api/register"
-			const { data: res } = await axios.delete(url, {data:obj})
-			console.log(res.message)
-			setUsers(res.users)
-		} catch (error) {
-			if (error.response) {
-				setError(error.response.data.message)
+	const handleDelete = (userId) => {
+		Swal.fire({
+			title: "Are you sure?",
+			text: "User details will be lost!",
+			icon: "warning",
+			background: "#1E1E1E",
+			color: "white",
+			showCancelButton: true,
+			confirmButtonColor: "#072e00",
+			cancelButtonColor: "#380300",
+			confirmButtonText: "Delete!",
+		}).then(async (result) => {
+			if (result.isConfirmed) {
+				let obj = users.find((o) => o._id === userId)
+				console.log(obj)
+				try {
+					const url = "http://localhost:8000/api/register"
+					const { data: res } = await axios.delete(url, { data: obj })
+					console.log(res.message)
+					setUsers(res.users)
+					Toast.fire("Deleted!", "User Deleted.", "success")
+				} catch (error) {
+					if (error.response) {
+						setError(error.response.data.message)
+					}
+				}
 			}
-		}
+		})
 	}
 
 	return (

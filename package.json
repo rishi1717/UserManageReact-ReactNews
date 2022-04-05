@@ -17,6 +17,7 @@
     "react-hook-form": "^7.29.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.0",
+    "sweetalert2": "^11.4.8",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

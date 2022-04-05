@@ -2,6 +2,17 @@ import React from "react"
 import { AppBar, Button, Toolbar, Typography } from "@mui/material"
 import NewspaperIcon from "@mui/icons-material/Newspaper"
 import { useNavigate } from "react-router-dom"
+import Swal from "sweetalert2"
+
+
+const Toast = Swal.mixin({
+	background: "#1E1E1E",
+	color: "white",
+	toast: true,
+	position: "top-end",
+	showConfirmButton: false,
+	timerProgressBar: true,
+})
 
 function Navbar(props) {
 	let admin = props.admin || ""
@@ -26,6 +37,13 @@ function Navbar(props) {
 					onClick={() => {
 						localStorage.removeItem("adminToken")
 						navigate("/adminlogin")
+						Toast.fire({
+							position: "bottom-right",
+							icon: "success",
+							title: "Logged out",
+							showConfirmButton: false,
+							timer: 3000,
+						})
 					}}
 				>
 					Logout
@@ -72,6 +90,13 @@ function Navbar(props) {
 					onClick={() => {
 						localStorage.removeItem('token')
 						navigate("/login")
+						Toast.fire({
+							position: "bottom-right",
+							icon: "success",
+							title: "Logged out",
+							showConfirmButton: false,
+							timer: 3000,
+						})
 					}}
 				>
 					Logout

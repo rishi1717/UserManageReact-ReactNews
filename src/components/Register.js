@@ -13,11 +13,11 @@ const darkTheme = createTheme({
 	},
 })
 
-export default function Register() {
+export default function Register(props) {
 	
 	return (
 		<>
-			<Navbar />
+			{!props.admin && <Navbar />}
 			<ThemeProvider theme={darkTheme}>
 				<Container component="main" maxWidth="sm">
 					<CssBaseline />
@@ -27,12 +27,17 @@ export default function Register() {
 							display: "flex",
 							flexDirection: "column",
 							alignItems: "center",
+							background:'black',
+							color:'white',
+							padding:'2rem 4rem'
 						}}
 					>
 						<Typography component="h1" variant="h5">
-							Register
+							{props.heading ? props.heading : "Register"}
 						</Typography>
-						<RegisterForm />
+						<RegisterForm
+							heading={props.heading ? props.heading : "Register"}
+						/>
 					</Box>
 				</Container>
 			</ThemeProvider>

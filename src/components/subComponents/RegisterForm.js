@@ -5,22 +5,18 @@ import Typography from "@mui/material/Typography"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
+import Swal from "sweetalert2"
 
-const style = {
-	position: "absolute",
-	top: "50%",
-	left: "50%",
-	transform: "translate(-50%, -50%)",
-	maxWidth: 500,
-	minWidth: 250,
-	bgcolor: "background.paper",
+const Toast = Swal.mixin({
+	background: "#1E1E1E",
 	color: "white",
-	border: "2px solid #000",
-	boxShadow: 24,
-	p: 4,
-}
+	toast: true,
+	position: "top-end",
+	showConfirmButton: false,
+	timerProgressBar: true,
+})
 
-export default function RegisterForm() {
+export default function RegisterForm(props) {
 	const [error, setError] = useState("")
 	const [data, setData] = useState({
 		name: "",
@@ -40,7 +36,15 @@ export default function RegisterForm() {
 			const url = "http://localhost:8000/api/register"
 			const { data: res } = await axios.post(url, data)
 			console.log(res.message)
-			navigate("/login")
+			if (props.admin) navigate("/login")
+			else navigate("/adminhome")
+			Toast.fire({
+				position: "bottom-right",
+				icon: "success",
+				title: "user registered",
+				showConfirmButton: false,
+				timer: 3000,
+			})
 		} catch (error) {
 			if (error.response) {
 				setError(error.response.data.message)
@@ -49,7 +53,7 @@ export default function RegisterForm() {
 	}
 
 	return (
-		<Box component="form" onSubmit={handleSubmit} noValidate sx={style}>
+		<Box component="form" onSubmit={handleSubmit} noValidate>
 			<TextField
 				margin="normal"
 				required
@@ -106,7 +110,7 @@ export default function RegisterForm() {
 				variant="outlined"
 				sx={{ mt: 3, mb: 2 }}
 			>
-				Register
+				{props.heading}
 			</Button>
 		</Box>
 	)
