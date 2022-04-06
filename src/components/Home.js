@@ -11,11 +11,11 @@ const darkTheme = createTheme({
 })
 
 function Home() {
-	
+
 	if (localStorage.getItem("token")) {
 		return (
 			<>
-				<Navbar user="rishi" />
+				<Navbar user={localStorage.getItem("userName")} />
 				<ThemeProvider theme={darkTheme}>
 					<NewsCard />
 				</ThemeProvider>

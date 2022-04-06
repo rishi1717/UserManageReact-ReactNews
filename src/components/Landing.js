@@ -1,15 +1,7 @@
-import { ThemeProvider } from "@emotion/react"
-import { createTheme } from "@mui/material"
 import React from "react"
+import Home from "./Home"
 import Navbar from "./Navbar"
 import LandingCard from "./subComponents/LandingCard"
-import NewsCard from "./subComponents/NewsCard"
-
-const darkTheme = createTheme({
-	palette: {
-		mode: "dark",
-	},
-})
 
 const styles = {
 	background: {
@@ -24,10 +16,7 @@ function Landing() {
 	if (localStorage.getItem("token")) {
 		return (
 			<>
-				<Navbar user="rishi" />
-				<ThemeProvider theme={darkTheme}>
-					<NewsCard />
-				</ThemeProvider>
+				<Home />
 			</>
 		)
 	} else {

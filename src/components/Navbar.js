@@ -79,6 +79,7 @@ function Navbar(props) {
 			)
 		} else {
 			navbarRight = (
+				
 				<Button
 					sx={{ marginLeft: "auto" }}
 					variant="outlined"
@@ -86,7 +87,7 @@ function Navbar(props) {
 					size="small"
 					onClick={() => {
 						localStorage.removeItem("token")
-						navigate("/")
+						localStorage.removeItem("userName")
 						Toast.fire({
 							position: "bottom-right",
 							icon: "success",
@@ -94,9 +95,10 @@ function Navbar(props) {
 							showConfirmButton: false,
 							timer: 3000,
 						})
+						navigate('/')
 					}}
 				>
-					Logout
+					Logout {localStorage.getItem('userName')}
 				</Button>
 			)
 		}
@@ -107,7 +109,7 @@ function Navbar(props) {
 			<AppBar sx={{ background: "black" }} position="fixed">
 				<Toolbar>
 					<NewspaperIcon onClick={logoHandler} />
-					<Typography sx={{ marginLeft: "0.4rem" }}>React News</Typography>
+					<Typography sx={{ marginLeft: "0.4rem" }}>React News {props.logged}</Typography>
 					{navbarRight}
 				</Toolbar>
 			</AppBar>

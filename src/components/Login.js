@@ -30,9 +30,10 @@ function Login() {
 		try {
 			const url = "http://localhost:8000/api/login"
 			const { data: res } = await axios.post(url, data)
-			console.log(res.user)
+			console.log(res.name)
 			localStorage.setItem("token", res.user)
-			navigate('/')
+			localStorage.setItem("userName", res.name)
+			navigate('/home')
 		} catch (error) {
 			if (
 				error.response &&
