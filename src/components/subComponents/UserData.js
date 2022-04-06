@@ -72,7 +72,7 @@ export default function UserData(props) {
 			const url = "http://localhost:8000/api/register"
 			const { data: res } = await axios.put(url, data)
 			console.log(res.message)
-			navigate("/adminhome")
+			navigate("/admin")
 			setOpen(false)
 			Toast.fire({
 				position: "bottom-end",

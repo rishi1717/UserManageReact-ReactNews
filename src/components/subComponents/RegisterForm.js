@@ -41,8 +41,7 @@ export default function RegisterForm(props) {
 			const url = "http://localhost:8000/api/register"
 			const { data: res } = await axios.post(url, data)
 			console.log(res.message)
-			if (props.admin) navigate("/adminhome")
-			else navigate("/login")
+			navigate("/login")
 			Toast.fire({
 				position: "bottom-right",
 				icon: "success",
@@ -137,11 +136,7 @@ export default function RegisterForm(props) {
 				error={!!errors?.password}
 				helperText={errors?.password ? errors.password.message : null}
 			/>
-			{error && (
-				<Typography sx={{color:'red'}}>
-					{error}
-				</Typography>
-			)}
+			{error && <Typography sx={{ color: "red" }}>{error}</Typography>}
 			<Button
 				type="submit"
 				fullWidth

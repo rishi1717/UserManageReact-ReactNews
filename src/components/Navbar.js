@@ -4,7 +4,6 @@ import NewspaperIcon from "@mui/icons-material/Newspaper"
 import { useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
 
-
 const Toast = Swal.mixin({
 	background: "#1E1E1E",
 	color: "white",
@@ -15,16 +14,14 @@ const Toast = Swal.mixin({
 })
 
 function Navbar(props) {
-	let admin = props.admin || ""
-	let user = props.user || ""
+	const admin = props.admin || ""
+	const user = props.user || ""
 	let navbarRight
+	const navigate = useNavigate()
 
 	const logoHandler = () => {
-		if (!user) navigate("/")
-		else navigate("/home")
+		navigate("/")
 	}
-
-	const navigate = useNavigate()
 
 	if (props.adminNav) {
 		if (admin) {
@@ -36,7 +33,7 @@ function Navbar(props) {
 					size="small"
 					onClick={() => {
 						localStorage.removeItem("adminToken")
-						navigate("/adminlogin")
+						navigate("/admin")
 						Toast.fire({
 							position: "bottom-right",
 							icon: "success",
@@ -88,8 +85,8 @@ function Navbar(props) {
 					color="inherit"
 					size="small"
 					onClick={() => {
-						localStorage.removeItem('token')
-						navigate("/login")
+						localStorage.removeItem("token")
+						navigate("/")
 						Toast.fire({
 							position: "bottom-right",
 							icon: "success",

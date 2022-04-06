@@ -17,7 +17,7 @@ const darkTheme = createTheme({
 })
 // const theme = createTheme()
 
-function Login() {
+function AdminLogin() {
 	const navigate = useNavigate()
 	const [data, setData] = useState({ adminid: "", password: "" })
 	const [error, setError] = useState("")
@@ -32,7 +32,7 @@ function Login() {
 			const { data: res } = await axios.post(url, data)
 			console.log(res)
 			localStorage.setItem("adminToken", res.admin)
-			navigate("/adminhome")
+			navigate("/admin")
 		} catch (error) {
 			if (
 				error.response &&
@@ -112,4 +112,4 @@ function Login() {
 	)
 }
 
-export default Login
+export default AdminLogin

@@ -32,7 +32,7 @@ function Login() {
 			const { data: res } = await axios.post(url, data)
 			console.log(res.user)
 			localStorage.setItem("token", res.user)
-			navigate('/home')
+			navigate('/')
 		} catch (error) {
 			if (
 				error.response &&

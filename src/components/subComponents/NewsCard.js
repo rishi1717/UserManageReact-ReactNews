@@ -56,9 +56,10 @@ export default function BasicTabs() {
 				>
 					<Tab label="World" {...a11yProps(0)} />
 					<Tab label="India" {...a11yProps(1)} />
-					<Tab label="Sports" {...a11yProps(2)} />
-					<Tab label="Entertainment" {...a11yProps(3)} />
-					<Tab label="Health" {...a11yProps(4)} />
+					<Tab label="Politics" {...a11yProps(2)} />
+					<Tab label="Sports" {...a11yProps(3)} />
+					<Tab label="Entertainment" {...a11yProps(4)} />
+					<Tab label="Health" {...a11yProps(5)} />
 				</Tabs>
 			</Box>
 			<TabPanel value={value} index={0}>
@@ -68,12 +69,15 @@ export default function BasicTabs() {
 				<NewsTopics topic="India" />
 			</TabPanel>
 			<TabPanel value={value} index={2}>
-				<NewsTopics topic="Sports" />
+				<NewsTopics topic="Politics" />
 			</TabPanel>
 			<TabPanel value={value} index={3}>
-				<NewsTopics topic="Entertainment" />
+				<NewsTopics topic="Sports" />
 			</TabPanel>
 			<TabPanel value={value} index={4}>
+				<NewsTopics topic="Entertainment" />
+			</TabPanel>
+			<TabPanel value={value} index={5}>
 				<NewsTopics topic="Health" />
 			</TabPanel>
 		</Box>
