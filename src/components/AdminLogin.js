@@ -32,7 +32,7 @@ function AdminLogin() {
 			const { data: res } = await axios.post(url, data)
 			console.log(res)
 			localStorage.setItem("adminToken", res.admin)
-			navigate("/admin")
+			navigate("/adminhome")
 		} catch (error) {
 			if (
 				error.response &&

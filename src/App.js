@@ -3,24 +3,24 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Login from "./components/Login"
 import Landing from "./components/Landing"
 import Register from "./components/Register"
-import Admin from "./components/Admin"
-import Home from "./components/Home"
+import AdminLogin from "./components/AdminLogin"
+import AdminHome from "./components/AdminHome"
 
 function App() {
 	const login = <Login />
 	const landing = <Landing />
 	const register = <Register />
-	const admin = <Admin />
-	const home = <Home />
+	const adminLogin = <AdminLogin />
+	const adminHome = <AdminHome />
 	return (
 		<>
 			<BrowserRouter>
 				<Routes>
 					<Route path="/" exact element={landing} />
 					<Route path="/login" exact element={login} />
-					<Route path="/home" exact element={home} />
 					<Route path="/register" exact element={register} />
-					<Route path="/admin" exact element={admin} />
+					<Route path="/adminlogin" exact element={adminLogin} />
+					<Route path="/adminhome" exact element={adminHome} />
 				</Routes>
 			</BrowserRouter>
 		</>

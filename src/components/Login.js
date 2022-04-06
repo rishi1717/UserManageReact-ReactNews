@@ -32,14 +32,13 @@ export default function Login() {
 	}
 	const navigate = useNavigate()
 	const onSubmit = async (event) => {
-		event.preventDefault()
 		try {
 			const url = "http://localhost:8000/api/login"
 			const { data: res } = await axios.post(url, data)
 			console.log(res.name)
 			localStorage.setItem("token", res.user)
 			localStorage.setItem("userName", res.name)
-			navigate("/home")
+			navigate("/")
 		} catch (error) {
 			if (error.response) {
 				setError(error.response.data.message)
@@ -115,7 +114,7 @@ export default function Login() {
 								}
 							/>
 							{error && (
-								<Typography component="h1" variant="h5">
+								<Typography color='red'>
 									{error}
 								</Typography>
 							)}

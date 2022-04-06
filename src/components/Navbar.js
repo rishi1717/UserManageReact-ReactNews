@@ -33,7 +33,7 @@ function Navbar(props) {
 					size="small"
 					onClick={() => {
 						localStorage.removeItem("adminToken")
-						navigate("/admin")
+						navigate("/adminlogin")
 						Toast.fire({
 							position: "bottom-right",
 							icon: "success",
@@ -95,7 +95,7 @@ function Navbar(props) {
 							showConfirmButton: false,
 							timer: 3000,
 						})
-						navigate('/')
+						navigate('/login')
 					}}
 				>
 					Logout {localStorage.getItem('userName')}
