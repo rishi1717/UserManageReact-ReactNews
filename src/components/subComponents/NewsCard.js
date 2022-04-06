@@ -4,6 +4,7 @@ import Tabs from "@mui/material/Tabs"
 import Tab from "@mui/material/Tab"
 import Box from "@mui/material/Box"
 import NewsTopics from "./NewsTopics"
+import jwt_decode from 'jwt-decode'
 
 function TabPanel(props) {
 	const { children, value, index, ...other } = props
@@ -39,6 +40,12 @@ function a11yProps(index) {
 }
 
 export default function BasicTabs() {
+	
+	const token = localStorage.getItem('token')
+	var decoded = jwt_decode(token)
+	console.log(decoded)
+	console.log(token)
+
 	const [value, setValue] = React.useState(0)
 
 	const handleChange = (event, newValue) => {

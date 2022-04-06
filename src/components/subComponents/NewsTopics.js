@@ -17,7 +17,6 @@ export default function NewsTopics(props) {
 			const data = await axios.get(
 				`https://newsapi.org/v2/everything?q=${props.topic}&sortBy=popularity&apiKey=5d9cae80086b47fda1a1bffac2de64ce`
 			)
-			console.log(data.data.articles)
 			setArticles(data.data.articles)
 		}
 		getNews()
