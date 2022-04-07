@@ -41,7 +41,8 @@ export default function RegisterForm(props) {
 			const url = "http://localhost:8000/api/register"
 			const { data: res } = await axios.post(url, data)
 			console.log(res.message)
-			navigate("/login")
+			if (props.admin) navigate("/adminhome")
+			else navigate("/login")
 			Toast.fire({
 				position: "bottom-right",
 				icon: "success",
