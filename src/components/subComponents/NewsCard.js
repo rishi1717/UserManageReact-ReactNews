@@ -57,29 +57,47 @@ export default function BasicTabs() {
 				>
 					<Tab label="World" {...a11yProps(0)} />
 					<Tab label="India" {...a11yProps(1)} />
-					<Tab label="Politics" {...a11yProps(2)} />
+					<Tab label="Business" {...a11yProps(2)} />
 					<Tab label="Sports" {...a11yProps(3)} />
 					<Tab label="Entertainment" {...a11yProps(4)} />
 					<Tab label="Health" {...a11yProps(5)} />
 				</Tabs>
 			</Box>
 			<TabPanel value={value} index={0}>
-				<NewsTopics topic="World" />
+				<NewsTopics
+					head="World"
+					topic="everything?q=world&apiKey=5d9cae80086b47fda1a1bffac2de64ce"
+				/>
 			</TabPanel>
 			<TabPanel value={value} index={1}>
-				<NewsTopics topic="India" />
+				<NewsTopics
+					head="India"
+					topic="everything?q=india&apiKey=5d9cae80086b47fda1a1bffac2de64ce"
+				/>
 			</TabPanel>
 			<TabPanel value={value} index={2}>
-				<NewsTopics topic="Politics" />
+				<NewsTopics
+					head="Business"
+					topic="top-headlines?country=in&category=business&apiKey=5d9cae80086b47fda1a1bffac2de64ce"
+				/>
 			</TabPanel>
 			<TabPanel value={value} index={3}>
-				<NewsTopics topic="Sports" />
+				<NewsTopics
+					head="Sports"
+					topic="top-headlines?country=in&category=sports&apiKey=5d9cae80086b47fda1a1bffac2de64ce"
+				/>
 			</TabPanel>
 			<TabPanel value={value} index={4}>
-				<NewsTopics topic="Entertainment" />
+				<NewsTopics
+					head="Entertainment"
+					topic="top-headlines?country=in&category=entertainment&apiKey=5d9cae80086b47fda1a1bffac2de64ce"
+				/>
 			</TabPanel>
 			<TabPanel value={value} index={5}>
-				<NewsTopics topic="Health" />
+				<NewsTopics
+					head="Health"
+					topic="top-headlines?category=health&apiKey=5d9cae80086b47fda1a1bffac2de64ce"
+				/>
 			</TabPanel>
 		</Box>
 	)

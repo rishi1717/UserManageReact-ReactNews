@@ -22,7 +22,7 @@ export default function LandingCard() {
 		try {
 			async function getNews() {
 				const data = await axios.get(
-					`https://newsapi.org/v2/everything?q=world&sortBy=popularity&apiKey=5d9cae80086b47fda1a1bffac2de64ce`
+					`https://newsapi.org/v2/top-headlines?country=in&apiKey=5d9cae80086b47fda1a1bffac2de64ce`
 				)
 				setArticles(data.data.articles)
 				setLoading(false)
@@ -36,7 +36,6 @@ export default function LandingCard() {
 	const navigate = useNavigate()
 	const nextHandler = () => {
 		let n = Math.floor(Math.random() * articles.length)
-		console.log(n);
 		setRan(n)
 	}
 

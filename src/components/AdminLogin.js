@@ -7,8 +7,9 @@ import Typography from "@mui/material/Typography"
 import Container from "@mui/material/Container"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import Navbar from "./Navbar"
-import axios from 'axios'
+import axios from "axios"
 import { useNavigate } from "react-router-dom"
+import { useForm } from "react-hook-form"
 
 const darkTheme = createTheme({
 	palette: {
@@ -25,8 +26,7 @@ function AdminLogin() {
 	const handleChange = ({ currentTarget: input }) => {
 		setData({ ...data, [input.name]: input.value })
 	}
-	const handleSubmit = async (event) => {
-		event.preventDefault()
+	const onSubmit = async (event) => {
 		try {
 			const url = "http://localhost:8000/api/admin"
 			const { data: res } = await axios.post(url, data)
@@ -43,6 +43,12 @@ function AdminLogin() {
 			}
 		}
 	}
+
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm()
 
 	return (
 		<>
@@ -63,11 +69,14 @@ function AdminLogin() {
 						</Typography>
 						<Box
 							component="form"
-							onSubmit={handleSubmit}
+							onSubmit={handleSubmit(onSubmit)}
 							noValidate
 							sx={{ mt: 1 }}
 						>
 							<TextField
+								{...register("adminid", {
+									required: "Provide your adminId!",
+								})}
 								margin="normal"
 								required
 								fullWidth
@@ -78,8 +87,15 @@ function AdminLogin() {
 								variant="standard"
 								onChange={handleChange}
 								value={data.adminid}
+								error={!!errors?.adminid}
+								helperText={
+									errors?.adminid ? errors.adminid.message : null
+								}
 							/>
 							<TextField
+								{...register("password", {
+									required: "Provide your password!",
+								})}
 								margin="normal"
 								required
 								fullWidth
@@ -90,12 +106,12 @@ function AdminLogin() {
 								variant="standard"
 								onChange={handleChange}
 								value={data.password}
+								error={!!errors?.password}
+								helperText={
+									errors?.password ? errors.password.message : null
+								}
 							/>
-							{error && (
-								<Typography component="h1" variant="h5">
-									{error}
-								</Typography>
-							)}
+							{error && <Typography color="red">{error}</Typography>}
 							<Button
 								type="submit"
 								fullWidth

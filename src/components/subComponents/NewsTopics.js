@@ -15,7 +15,7 @@ export default function NewsTopics(props) {
 	useEffect(() => {
 		async function getNews() {
 			const data = await axios.get(
-				`https://newsapi.org/v2/everything?q=${props.topic}&sortBy=popularity&apiKey=5d9cae80086b47fda1a1bffac2de64ce`
+				`https://newsapi.org/v2/${props.topic}`
 			)
 			setArticles(data.data.articles)
 		}
@@ -26,7 +26,7 @@ export default function NewsTopics(props) {
 		<Container component="main">
 			<Box sx={{ flexGrow: 1 }}>
 				<Typography variant="h4" sx={{ marginTop: "2rem", color: "white" }}>
-					{props.topic} News
+					{props.head} News
 				</Typography>
 				<Grid
 					container
