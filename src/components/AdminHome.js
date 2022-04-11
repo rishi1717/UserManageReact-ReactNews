@@ -51,7 +51,7 @@ function AdminHome() {
 	if (localStorage.getItem("adminToken")) {
 		return (
 			<>
-				<Navbar adminNav={true} admin="rishi" />
+				<Navbar adminNav={true} admin="admin" />
 				<ThemeProvider theme={darkTheme}>
 					<Container maxWidth="md">
 						<Box
